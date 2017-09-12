@@ -1,0 +1,20 @@
+@import "../node_modules/bulmaswatch/solar/variables";
+@import "../node_modules/bulma/bulma";
+@import "../node_modules/bulmaswatch/solar/overrides";
+@import "../node_modules/mapbox-gl/dist/mapbox-gl.css";
+html {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+.navbar-item {
+  img {
+    height: 50px;
+  }
+}
+
+@import "./components/map/map.css";
