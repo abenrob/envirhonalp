@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import MapGL, { Marker, Popup, NavigationControl } from 'react-map-gl';
-import axios from 'axios';
 
 import ProjectPin from './project-pin';
 import ProjectInfo from './project-info';
@@ -14,15 +13,6 @@ const navStyle = {
 };
 
 const mapStyle = `https://openmaptiles.github.io/dark-matter-gl-style/style-cdn.json?key=${process.env.REACT_APP_MAPKEY}`;
-
-const fields = [
-  'cartodb_id', 'liens', 'producteur', 'date', 'source', 
-  'couverture_temporelle', 'couverture_geographique', 'type_de_donnees',
-  'theme_1', 'theme_2', 'theme_3', 'theme_4', 'projets_observatoires'
-];
-
-const sql = `select ${fields.join(',')}, x as longitude, y as latitude 
-from ${process.env.REACT_APP_SQLTABLE} where x is not null and y is not null`;
 
 export default class Map extends Component {
 
@@ -39,19 +29,13 @@ export default class Map extends Component {
         height: 500,
         attributionControl: true
       },
-      popupInfo: null,
-      projects: []
+      popupInfo: null
     };
   }
 
   componentDidMount() {
     window.addEventListener('resize', this._resize);
     this._resize();
-    axios.get(`${process.env.REACT_APP_SQLROOT}?q=${encodeURIComponent(sql)}`)
-      .then(res => {
-        const projects = res.data.rows;
-        this.setState({ projects });
-      });
   }
 
   componentWillUnmount() {
@@ -77,7 +61,7 @@ export default class Map extends Component {
       <Marker key={`marker-${index}`}
         longitude={project.longitude}
         latitude={project.latitude} >
-        <ProjectPin size={20} onClick={() => this.setState({popupInfo: project})} />
+        <ProjectPin size={16} onClick={() => this.setState({popupInfo: project})} />
       </Marker>
     );
   }
@@ -106,7 +90,7 @@ export default class Map extends Component {
         mapStyle={mapStyle}
         onViewportChange={this._updateViewport} >
 
-        { this.state.projects.map(this._renderMarker) }
+        { this.props.projects.map(this._renderMarker) }
 
         { this._renderPopup() }
 
