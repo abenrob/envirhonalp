@@ -7,8 +7,8 @@ import ProjectInfo from './project-info';
 
 const navStyle = {
   position: 'absolute',
-  top: 0,
-  left: 0,
+  bottom: 20,
+  right: 0,
   padding: '10px'
 };
 
