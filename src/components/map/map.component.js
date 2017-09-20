@@ -1,104 +1,100 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
-import MapGL, { Marker, Popup, NavigationControl } from 'react-map-gl';
-
-import ProjectPin from './project-pin';
-import ProjectInfo from './project-info';
+import React, { Component } from 'react'
+import { render } from 'react-dom'
+import mapboxgl from 'mapbox-gl'
+import { point as turf_point, feature as turf_feature, featureCollection as turf_featureCollection } from '@turf/helpers'
 
 const navStyle = {
   position: 'absolute',
   bottom: 20,
   right: 0,
   padding: '10px'
-};
+}
 
-const mapStyle = `https://openmaptiles.github.io/dark-matter-gl-style/style-cdn.json?key=${process.env.REACT_APP_MAPKEY}`;
+const mapStyle = `https://openmaptiles.github.io/klokantech-terrain-gl-style/style-cdn.json?key=${process.env.REACT_APP_MAPKEY}`
 
 export default class Map extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      viewport: {
-        latitude: 44.9,
-        longitude: 4.5,
-        zoom: 6.5,
-        bearing: 0,
-        pitch: 30,
-        width: 500,
-        height: 500,
-        attributionControl: true
-      },
-      popupInfo: null
-    };
+      mapReady: false
+    }
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this._resize);
-    this._resize();
+    this.map = new mapboxgl.Map({
+      container: this.mapContainer,
+      style: mapStyle,
+      center: [4.5, 44.9],
+      zoom: 6.5
+    })
+
+    this.map.on('load', () => {
+      this.map.addSource('projectSource', {
+        type: 'geojson',
+        data: turf_featureCollection([])
+      })
+
+      this.map.addLayer({
+        id: 'projects',
+        type: 'circle',
+        source: 'projectSource',
+        'paint': {
+          'circle-radius': {
+            'stops': [[0, 2], [8, 6], [16, 40]]
+          },
+          'circle-color': '#38a1ad',
+          'circle-stroke-width': {
+            'stops': [[0, 1], [8, 2], [16, 8]]
+          },
+          'circle-stroke-color': '#fff'
+        }
+      })
+
+      this.map.on('click', 'projects', (e) => {
+        new mapboxgl.Popup()
+          .setLngLat(e.features[0].geometry.coordinates)
+          .setHTML(e.features[0].properties.producteur)
+          .addTo(this.map)
+      })
+
+      this.map.on('mouseenter', 'projects', () => {
+        this.map.getCanvas().style.cursor = 'pointer'
+      })
+
+      this.map.on('mouseleave', 'projects', () => {
+        this.map.getCanvas().style.cursor = ''
+      })
+
+      this.setState({ mapReady: true })
+      this.mapIsLoaded()
+    })
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this._resize);
+  mapIsLoaded() {
+    this.props.mapReadyNotify()
   }
 
-  _resize = () => {
-    this.setState({
-      viewport: {
-        ...this.state.viewport,
-        width: this.props.width || window.innerWidth,
-        height: this.props.height || window.innerHeight -49
-      }
-    });
-  };
+  componentDidUpdate() {
+    if (this.state.mapReady) {
+      const projectMap = this.props.projects.map(project => {
+        return turf_point([project.longitude, project.latitude], project)
+      })
 
-  _updateViewport = (viewport) => {
-    this.setState({viewport});
-  }
+      const mapData = turf_featureCollection(projectMap)
 
-  _renderMarker = (project, index) => {
-    return (
-      <Marker key={`marker-${index}`}
-        longitude={project.longitude}
-        latitude={project.latitude} >
-        <ProjectPin size={16} onClick={() => this.setState({popupInfo: project})} />
-      </Marker>
-    );
-  }
+      this.map.getSource('projectSource').setData(mapData)
+    }
 
-  _renderPopup() {
-    const {popupInfo} = this.state;
-
-    return popupInfo && (
-      <Popup tipSize={5}
-        anchor="top"
-        longitude={popupInfo.longitude}
-        latitude={popupInfo.latitude}
-        onClose={() => this.setState({popupInfo: null})} >
-        <ProjectInfo info={popupInfo} />
-      </Popup>
-    );
   }
 
   render() {
 
-    const {viewport} = this.state;
-
     return (
-      <MapGL className="map-container"
-        {...viewport}
-        mapStyle={mapStyle}
-        onViewportChange={this._updateViewport} >
-
-        { this.props.projects.map(this._renderMarker) }
-
-        { this._renderPopup() }
-
-        <div className="map-nav" style={navStyle}>
-          <NavigationControl onViewportChange={this._updateViewport} />
-        </div>
-
-      </MapGL>
+      <div
+        ref={el => this.mapContainer = el}
+        className="map-container"
+      />
     );
   }
 
