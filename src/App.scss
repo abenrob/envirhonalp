@@ -24,9 +24,10 @@ body {
   font-size: 1.1rem;
   font-weight: 800;
   img {
-    height: 100%;
-    max-height: 100%;
+    display: block;
+    max-height:51px;
     width: auto;
+    height: auto;
   }
 }
 
