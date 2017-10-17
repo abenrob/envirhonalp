@@ -54,7 +54,7 @@ export default class Map extends Component {
       this.map.on('click', 'projects', (e) => {
         new mapboxgl.Popup()
           .setLngLat(e.features[0].geometry.coordinates)
-          .setHTML(e.features[0].properties.producteur)
+          .setHTML(this.popUpContent(e.features[0].properties))
           .addTo(this.map)
       })
 
@@ -86,6 +86,14 @@ export default class Map extends Component {
       this.map.getSource('projectSource').setData(mapData)
     }
 
+  }
+
+  popUpContent(properties) {
+    return `<p><strong>Producteur: </strong>${properties.producteur}</p>
+    <p><strong>Date: </strong>${properties.date} <strong>Source: </strong>${properties.source}</p>
+    <p><strong>Géographique: </strong>${properties.couverture_geographique}</p>
+    <p><strong>Type de projet: </strong>${properties.projets_observatoires}</p>
+    <p><strong>Type de données: </strong>${properties.type_de_donnees}</p>`
   }
 
   render() {
