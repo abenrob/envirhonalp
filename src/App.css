@@ -5755,3 +5755,8 @@ body {
     max-height: 51px;
     width: auto;
     height: auto; }
+
+.react-autosuggest__container {
+  position: absolute;
+  top: 60px;
+  left: 10px; }

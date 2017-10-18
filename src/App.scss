@@ -31,4 +31,10 @@ body {
   }
 }
 
+.react-autosuggest__container {
+  position: absolute;
+  top: 60px;
+  left: 10px;
+}
+
 @import "./components/map/map.css";

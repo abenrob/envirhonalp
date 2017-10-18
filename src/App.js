@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Map from './components/map/map.component'
+import { ReactAutosuggestGeocoder } from 'react-autosuggest-geocoder'
 import logo from './logo.png'
 import {
   Hero, HeroHeader, Nav, NavLeft, NavItem
@@ -8,7 +9,7 @@ import {
 import './App.css'
 
 const fields = [
-  'cartodb_id', 'liens', 'producteur', 'date', 'source', 
+  'cartodb_id', 'liens', 'producteur', 'date', 'source',
   'couverture_temporelle', 'couverture_geographique', 'type_de_donnees',
   'theme_1', 'theme_2', 'theme_3', 'theme_4', 'projets_observatoires'
 ]
@@ -21,8 +22,16 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      projects: []
+      projects: [],
+      searchResult: null
     }
+  }
+
+  onSelect(selection) {
+    console.log(selection)
+    this.setState({
+      searchResult: selection
+    })
   }
 
   render() {
@@ -38,15 +47,24 @@ class App extends Component {
             </Nav>
           </HeroHeader>
         </Hero>
-        <Map 
+        <Map
           projects={this.state.projects}
+          searchResult={this.state.searchResult}
           mapReadyNotify={this.mapReadyForData.bind(this)}
         ></Map>
+        <ReactAutosuggestGeocoder
+            url='https://search.mapzen.com/v1'
+            sources='gn'
+            apiKey={process.env.REACT_APP_MAPZEN}
+            onSuggestionSelected={(event, { search, suggestion, method }) => {
+              this.onSelect(suggestion)
+            }} />
       </div>
     )
   }
 
   mapReadyForData() {
+    console.log('ready')
     this.setState(this.state)
   }
 

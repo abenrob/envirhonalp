@@ -38,6 +38,7 @@
     "postcss-loader": "2.0.6",
     "promise": "8.0.1",
     "react": "^15.6.1",
+    "react-autosuggest-geocoder": "^1.0.0",
     "react-dev-utils": "^4.0.1",
     "react-dom": "^15.6.1",
     "react-map-gl": "^3.0.4",
@@ -54,7 +55,7 @@
     "watch-css": "yarn run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "gh-pages": "git subtree push --prefix build origin gh-pages",  
+    "gh-pages": "git subtree push --prefix build origin gh-pages",
     "test": "node scripts/test.js --env=jsdom"
   },
   "jest": {

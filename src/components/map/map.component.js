@@ -3,13 +3,6 @@ import { render } from 'react-dom'
 import mapboxgl from 'mapbox-gl'
 import { point as turf_point, feature as turf_feature, featureCollection as turf_featureCollection } from '@turf/helpers'
 
-const navStyle = {
-  position: 'absolute',
-  bottom: 20,
-  right: 0,
-  padding: '10px'
-}
-
 const mapStyle = `https://openmaptiles.github.io/klokantech-terrain-gl-style/style-cdn.json?key=${process.env.REACT_APP_MAPKEY}`
 
 export default class Map extends Component {
@@ -86,6 +79,9 @@ export default class Map extends Component {
       this.map.getSource('projectSource').setData(mapData)
     }
 
+    if (this.state.mapReady && this.props.searchResult.type) {
+      console.log('registered')
+    }
   }
 
   popUpContent(properties) {
