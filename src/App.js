@@ -51,7 +51,7 @@ class App extends Component {
           projects={this.state.projects}
           searchResult={this.state.searchResult}
           mapReadyNotify={this.mapReadyForData.bind(this)}
-        ></Map>
+        />
         <ReactAutosuggestGeocoder
             url='https://search.mapzen.com/v1'
             sources='gn'
