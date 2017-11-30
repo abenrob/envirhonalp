@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Map from './components/map/map.component'
+import Search from './components/search/search.component'
 import logo from './logo.png'
 import {
   Hero, HeroHeader, Nav, NavLeft, NavItem
@@ -8,13 +9,20 @@ import {
 import './App.css'
 
 const fields = [
-  'cartodb_id', 'liens', 'producteur', 'date', 'source', 
-  'couverture_temporelle', 'couverture_geographique', 'type_de_donnees',
-  'theme_1', 'theme_2', 'theme_3', 'theme_4', 'projets_observatoires'
+  "sites_web_de_reference",
+  "nom_projet_observatoire",
+  "themes",
+  "detail_donnees_mesurees",
+  "type_de_donnees_modifie",
+  "couverture_geographique_modifiee",
+  "couverture_temporelle_debut",
+  "couverture_temporelle_fin",
+  "base_de_reference",
+  "accessibilite3_point_d_acces",
 ]
 
-const sql = `select ${fields.join(',')}, x as longitude, y as latitude 
-from ${process.env.REACT_APP_SQLTABLE} where x is not null and y is not null`
+const sql = `select ${fields.join(',')}, longitude, latitude 
+from ${process.env.REACT_APP_SQLTABLE} where longitude is not null and latitude is not null`
 
 class App extends Component {
 
@@ -42,6 +50,7 @@ class App extends Component {
           projects={this.state.projects}
           mapReadyNotify={this.mapReadyForData.bind(this)}
         ></Map>
+        <Search></Search>
       </div>
     )
   }

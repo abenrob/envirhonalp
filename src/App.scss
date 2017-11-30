@@ -32,3 +32,6 @@ body {
 }
 
 @import "./components/map/map.css";
+@import "./components/search/search.css";
+$fa-font-path:"../node_modules/font-awesome/fonts";
+@import "../node_modules/font-awesome/scss/font-awesome";
