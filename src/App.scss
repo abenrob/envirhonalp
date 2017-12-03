@@ -31,7 +31,12 @@ body {
   }
 }
 
+.actionable {
+  cursor: pointer;
+}
+
 @import "./components/map/map.css";
-@import "./components/search/search.css";
+@import "./components/filter/filter.css";
+@import "./components/filterList/filterList.css";
 $fa-font-path:"../node_modules/font-awesome/fonts";
 @import "../node_modules/font-awesome/scss/font-awesome";

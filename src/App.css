@@ -3,7 +3,8 @@
 /*! bulma.io v0.5.1 | MIT License | github.com/jgthms/bulma */
 @import url(../node_modules/mapbox-gl/dist/mapbox-gl.css);
 @import url(./components/map/map.css);
-@import url(./components/search/search.css);
+@import url(./components/filter/filter.css);
+@import url(./components/filterList/filterList.css);
 @keyframes spinAround {
   from {
     transform: rotate(0deg); }
@@ -5757,6 +5758,9 @@ body {
     max-height: 51px;
     width: auto;
     height: auto; }
+
+.actionable {
+  cursor: pointer; }
 
 /*!
  *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome

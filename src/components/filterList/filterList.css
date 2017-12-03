@@ -1,0 +1,8 @@
+.filter-item {
+  cursor: pointer;
+  color: #666;
+  line-height: 14px;
+  margin-bottom: 5px; }
+  .filter-item i {
+    font-size: 14px;
+    margin-right: 5px; }
