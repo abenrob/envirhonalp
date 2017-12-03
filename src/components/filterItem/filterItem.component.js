@@ -6,17 +6,24 @@ export default class FilterItem extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: "",
-      checked: null 
+      name: null,
+      checked: null,
+      field: null 
     }
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({name: newProps.filter.name, checked: newProps.filter.checked})
+    this.setState({
+      field: newProps.filter.field,
+      name: newProps.filter.name, 
+      checked: newProps.filter.checked
+    })
   }
 
-  componentDidUpdate() {
-    // console.log(this.state,this.props.filter)
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevState.name && !prevState.checked && !prevState.field) {
+      this.props.onFilterChange(this.state)
+    }    
   }
 
   toggle() {

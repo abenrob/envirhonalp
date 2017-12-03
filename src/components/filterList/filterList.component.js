@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
-import {
-  Checkbox, MenuList, Control
-} from 'bloomer'
+import { MenuList } from 'bloomer'
 import FilterItem from '../filterItem/filterItem.component'
 
 export default class FilterList extends Component {
@@ -17,7 +15,7 @@ export default class FilterList extends Component {
   }
 
   componentDidUpdate() {
-    // console.log('thing',this.props.filterList)
+    //console.log('filterList',this.props.filterList)
   }
 
   render() {
@@ -28,7 +26,8 @@ export default class FilterList extends Component {
           {this.props.filterList.values.map((filter, idx) => {
             return <FilterItem
               key={idx}
-              filter={filter}
+              onFilterChange={this.props.onFilterChange}
+              filter={Object.assign({field: this.props.filterList.field},filter)}
             ></FilterItem>
           })}
         </MenuList>

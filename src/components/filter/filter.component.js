@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import {
-  Panel, PanelHeading, PanelBlock, PanelIcon, Button, Checkbox, Menu, MenuLabel
+  Panel, PanelHeading, PanelBlock, Button, Menu, MenuLabel
 } from 'bloomer'
 import FilterList from '../filterList/filterList.component'
 
@@ -31,10 +31,11 @@ export default class FilterMenu extends Component {
             <PanelHeading>Filtres</PanelHeading>
             {
               Object.keys(this.props.filters).map((filter, index) => {
-                const thisFilter = this.props.filters[filter]
-                return <PanelBlock key={index}  ><Menu>
+                const thisFilter = Object.assign({ field: filter },this.props.filters[filter])
+                return <PanelBlock key={index}><Menu>
                       <MenuLabel>{thisFilter.name}</MenuLabel>
                       <FilterList
+                        onFilterChange={this.props.onFilterChange}
                         filterList={thisFilter}
                       ></FilterList>
                     </Menu></PanelBlock>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import mapboxgl from 'mapbox-gl'
-import { point as turf_point, feature as turf_feature, featureCollection as turf_featureCollection } from '@turf/helpers'
+import { point as turf_point, featureCollection as turf_featureCollection } from '@turf/helpers'
 
 const mapStyle = `https://openmaptiles.github.io/klokantech-terrain-gl-style/style-cdn.json?key=${process.env.REACT_APP_MAPKEY}`
 

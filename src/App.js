@@ -29,7 +29,9 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      projects: []
+      projects: [],
+      filters: {},
+      mapFilters: {}
     }
   }
 
@@ -49,12 +51,21 @@ class App extends Component {
         <Map 
           projects={this.state.projects}
           mapReadyNotify={this.mapReadyForData.bind(this)}
+          mapFilters={this.state.mapFilters}
         ></Map>
         <FilterMenu
+          onFilterChange={this.filterChange}
           filters={this.state.filters}
         ></FilterMenu>
       </div>
     )
+  }
+
+  filterChange = (filter) => {
+    const filtersCopy = {...this.state.filters}
+    const filterIndex = filtersCopy[filter.field].values.findIndex(f => f.name === filter.name)
+    filtersCopy[filter.field].values[filterIndex].checked = filter.checked
+    this.setState({filters: filtersCopy})
   }
 
   mapReadyForData() {
@@ -65,7 +76,6 @@ class App extends Component {
     axios.get(`${process.env.REACT_APP_SQLROOT}?q=${encodeURIComponent(sql)}`)
       .then(res => {
         const projects = res.data.rows
-        this.setState({ projects: projects })
         const filters = fields.filter(field => field.filter).reduce((result, item) => {
           const key = item.name
           result[key] = {name: item.display, values:[].concat(...projects.map(
@@ -80,7 +90,7 @@ class App extends Component {
           return result
         }, {})
 
-        this.setState({ filters: filters })
+        this.setState({ projects: projects, filters: filters })
       })
 
   }
