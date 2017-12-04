@@ -33,7 +33,7 @@ export default class SliderFilter extends Component {
       actuals[0] = Math.round((value[0]/100) * (range[1] - range[0])) + range[0]
     }
 
-    if (! value[1] === 100) {
+    if (value[1] === 100) {
       actuals[1] = 'ajd.'
     } else {
       actuals[1] = Math.round((value[1]/100) * (range[1] - range[0])) + range[0]
