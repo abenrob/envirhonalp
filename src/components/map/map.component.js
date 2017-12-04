@@ -39,6 +39,8 @@ export default class Map extends Component {
       zoom: 6.5
     })
 
+    this.map.addControl(new mapboxgl.NavigationControl(), 'top-left')
+
     this.map.on('load', () => {
       this.map.addSource('projectSource', {
         type: 'geojson',
@@ -85,7 +87,8 @@ export default class Map extends Component {
     this.props.mapReadyNotify()
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(props,state) {
+    console.log(props,state)
     if (this.state.mapReady) {
       const projectMap = this.props.projects.map(project => {
         return turf_point([project.longitude, project.latitude], project)
@@ -95,7 +98,6 @@ export default class Map extends Component {
 
       this.map.getSource('projectSource').setData(mapData)
     }
-
   }
 
   render() {
@@ -105,7 +107,7 @@ export default class Map extends Component {
         ref={el => this.mapContainer = el}
         className="map-container"
       />
-    );
+    )
   }
 
 }

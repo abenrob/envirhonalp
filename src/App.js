@@ -30,8 +30,7 @@ class App extends Component {
     super(props)
     this.state = {
       projects: [],
-      filters: {},
-      mapFilters: {}
+      filters: {}
     }
   }
 
@@ -51,7 +50,7 @@ class App extends Component {
         <Map 
           projects={this.state.projects}
           mapReadyNotify={this.mapReadyForData.bind(this)}
-          mapFilters={this.state.mapFilters}
+          filters={this.state.filters}
         ></Map>
         <FilterMenu
           onFilterChange={this.filterChange}
@@ -62,6 +61,7 @@ class App extends Component {
   }
 
   filterChange = (filter) => {
+    console.log('change')
     const filtersCopy = {...this.state.filters}
     const filterIndex = filtersCopy[filter.field].values.findIndex(f => f.name === filter.name)
     filtersCopy[filter.field].values[filterIndex].checked = filter.checked

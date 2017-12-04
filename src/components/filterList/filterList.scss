@@ -1,10 +1,7 @@
-.filter-item {
-    cursor: pointer;
-    color: #666;
-    line-height: 14px;
-    margin-bottom: 5px;
-    i {
-        font-size: 14px;
-        margin-right: 5px;
+.menu-label {
+    font-size: 0.8em;
+    margin-bottom: .5em;
+    &:not(:last-child) {
+        margin-bottom: .5em;
     }
 }

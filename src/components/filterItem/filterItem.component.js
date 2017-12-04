@@ -20,21 +20,15 @@ export default class FilterItem extends Component {
     })
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevState.name && !prevState.checked && !prevState.field) {
-      this.props.onFilterChange(this.state)
-    }    
-  }
-
   toggle() {
-    this.setState({checked: !this.state.checked})
+    this.props.onFilterChange(Object.assign(this.state, {checked: !this.state.checked}))
   }
 
   render() {
       return <li 
         className="filter-item" 
         onClick={() => this.toggle()}>
-          <i className={`fa ${this.state.checked ? "fa-dot-circle-o" : "fa-circle-o"}`} aria-hidden="true"></i> 
+          <i className={`fa ${this.state.checked ? "fa-check-square" : "fa-square"}`} aria-hidden="true"></i> 
           {this.state.name} 
       </li>
   }
