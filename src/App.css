@@ -2,6 +2,7 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway");
 /*! bulma.io v0.5.1 | MIT License | github.com/jgthms/bulma */
 @import url(../node_modules/mapbox-gl/dist/mapbox-gl.css);
+@import url(../node_modules/rc-slider/dist/rc-slider.css);
 @keyframes spinAround {
   from {
     transform: rotate(0deg); }
@@ -5789,6 +5790,27 @@ body {
   .filter-item i {
     color: #38a1ad;
     margin-right: 5px; }
+
+.slider-container {
+  width: 100%; }
+  .slider-container .slider-values {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px; }
+  .slider-container .slider-box {
+    margin: 0 10px; }
+  .slider-container .rc-slider {
+    margin-top: 10px; }
+    .slider-container .rc-slider .rc-slider-handle {
+      border: solid 2px #38a1ad; }
+      .slider-container .rc-slider .rc-slider-handle:focus {
+        box-shadow: 0 0 0 5px rgba(56, 161, 173, 0.5); }
+      .slider-container .rc-slider .rc-slider-handle:hover {
+        box-shadow: 0 0 5px rgba(56, 161, 173, 0.5); }
+      .slider-container .rc-slider .rc-slider-handle:active {
+        box-shadow: 0 0 5px rgba(56, 161, 173, 0.5); }
+    .slider-container .rc-slider .rc-slider-track {
+      background-color: #38a1ad; }
 
 /*!
  *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome

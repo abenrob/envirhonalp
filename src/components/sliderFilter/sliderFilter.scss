@@ -1,0 +1,29 @@
+.slider-container {
+    width: 100%;
+    .slider-values {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+    }
+    .slider-box {
+        margin: 0 10px;
+    }
+    .rc-slider {
+        margin-top: 10px;
+        .rc-slider-handle {
+            border: solid 2px $primary;
+            &:focus {
+                box-shadow: 0 0 0 5px rgba($primary,.5);
+            }
+            &:hover {
+                box-shadow: 0 0 5px rgba($primary,.5);
+            }
+            &:active {
+                box-shadow: 0 0 5px rgba($primary,.5);
+            }
+        }
+        .rc-slider-track {
+            background-color: $primary;
+        }
+    }
+}

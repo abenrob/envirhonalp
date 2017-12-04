@@ -4,6 +4,7 @@ import {
   Panel, PanelHeading, PanelBlock, Button, Menu, MenuLabel
 } from 'bloomer'
 import FilterList from '../filterList/filterList.component'
+import SliderFilter from '../sliderFilter/sliderFilter.component'
 
 export default class FilterMenu extends Component {
 
@@ -12,12 +13,13 @@ export default class FilterMenu extends Component {
     this.state = {}
   }
 
-  componentDidMount() {
-    
+  shouldComponentUpdate(nextProps) {
+    console.log(nextProps)
+    return true
   }
 
   componentDidUpdate() {
-    //console.log(this.props.filters)
+    console.log('filters')
   }
 
   render() {
@@ -41,8 +43,17 @@ export default class FilterMenu extends Component {
                     </Menu></PanelBlock>
               })
             }
+            <SliderFilter
+              sliderRange={this.props.sliderRange}
+              onSliderChange={this.props.onSliderChange}
+            ></SliderFilter>
             <PanelBlock>
-                <Button isOutlined isFullWidth isColor='primary'> Réinitialiser les filtres</Button>
+                <Button 
+                  isOutlined 
+                  isFullWidth 
+                  isColor='primary'
+                  onClick={() => this.props.resetFilters()}
+                > Réinitialiser les filtres</Button>
             </PanelBlock>
         </Panel>
         </div>

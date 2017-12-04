@@ -15,20 +15,27 @@ export default class Map extends Component {
   }
 
   formatPopup(properties) {
-    console.log(properties) 
     var link = null
     if (properties.sites_web_de_reference === '' && properties.accessibilite3_point_d_acces !== '') {
-      link = `<p><a href="${properties.accessibilite3_point_d_acces}" target="_blank">accès aux données</a></p>`
+      // check for mail
+      if (properties.accessibilite3_point_d_acces.match(/[@]/g)){
+        link = `<p><a href="mailto:${properties.accessibilite3_point_d_acces}">en savoir plus</a></p>`
+      } else {
+        link = `<p><a href="${properties.accessibilite3_point_d_acces}" target="_blank">en savoir plus</a></p>`
+      }
     } else if (properties.sites_web_de_reference !== '') {
-      link = `<p><a href="${properties.sites_web_de_reference}" target="_blank">accès aux données</a></p>`
+      link = `<p><a href="${properties.sites_web_de_reference}" target="_blank">en savoir plus</a></p>`
+    } else {
+      link = `<p><a href="mailto:contact@plateforme-ouranos.fr">en savoir plus</a></p>`
     }
 
     return `<p><strong>Nom: </strong>${properties.nom_projet_observatoire}</p>
       <p><strong>Lieu: </strong>${properties.couverture_geographique_modifiee}</p>
       <p><strong>Thèmes: </strong>${properties.themes}</p>
       <p><strong>Type de données: </strong>${properties.type_de_donnees_modifie}</p>
+      <p><strong>Propriété des données: </strong>${properties.accessibilite_publique_privee}</p>
       <p><strong>Couverture temporelle: </strong>${properties.couverture_temporelle_debut} - ${properties.couverture_temporelle_fin === 'null' ? 'aujourd\'hui' : properties.couverture_temporelle_fin}</p>  
-      ${link ? link : ''}`
+      ${link}`
   }
 
   componentDidMount() {
@@ -44,7 +51,10 @@ export default class Map extends Component {
     this.map.on('load', () => {
       this.map.addSource('projectSource', {
         type: 'geojson',
-        data: turf_featureCollection([])
+        data: turf_featureCollection([]),
+        // cluster: true,
+        // clusterMaxZoom: 14,
+        // clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
       })
 
       this.map.addLayer({
@@ -87,17 +97,24 @@ export default class Map extends Component {
     this.props.mapReadyNotify()
   }
 
-  componentDidUpdate(props,state) {
-    console.log(props,state)
-    if (this.state.mapReady) {
-      const projectMap = this.props.projects.map(project => {
-        return turf_point([project.longitude, project.latitude], project)
-      })
-
-      const mapData = turf_featureCollection(projectMap)
-
-      this.map.getSource('projectSource').setData(mapData)
+  shouldComponentUpdate(nextProps) {
+    const should = this.state.mapReady && 
+      nextProps.projects && 
+      nextProps.projects !== this.state.projects
+    if (should) {
+      this.setState({projects: nextProps.projects})
     }
+    return should ? true : false
+  }
+
+  componentDidUpdate(newProps) {
+    const projectMap = newProps.projects.map(project => {
+      return turf_point([project.longitude, project.latitude], project)
+    })
+
+    const mapData = turf_featureCollection(projectMap)
+
+    this.map.getSource('projectSource').setData(mapData)
   }
 
   render() {

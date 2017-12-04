@@ -3,6 +3,7 @@ $family-sans-serif: 'Raleway', sans-serif;
 $primary: #38a1ad;
 @import "../node_modules/bulma/bulma";
 @import "../node_modules/mapbox-gl/dist/mapbox-gl.css";
+@import "../node_modules/rc-slider/dist/rc-slider.css";
 
 html {
   overflow-x: hidden;
@@ -43,5 +44,6 @@ body {
 @import "./components/filter/filter.scss";
 @import "./components/filterList/filterList.scss";
 @import "./components/filterItem/filterItem.scss";
+@import "./components/sliderFilter/sliderFilter.scss";
 $fa-font-path:"../node_modules/font-awesome/fonts";
 @import "../node_modules/font-awesome/scss/font-awesome";

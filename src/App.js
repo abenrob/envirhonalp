@@ -18,8 +18,11 @@ const fields = [
   {name: "couverture_temporelle_debut"},
   {name: "couverture_temporelle_fin"},
   {name: "base_de_reference"},
+  {name: "accessibilite_publique_privee"},
   {name: "accessibilite3_point_d_acces"},
 ]
+
+const temporalRange = [0,100]
 
 const sql = `select ${fields.map(field => field.name).join(',')}, longitude, latitude 
 from ${process.env.REACT_APP_SQLTABLE} where longitude is not null and latitude is not null`
@@ -30,7 +33,8 @@ class App extends Component {
     super(props)
     this.state = {
       projects: [],
-      filters: {}
+      filters: {},
+      sliderRange: temporalRange
     }
   }
 
@@ -49,10 +53,12 @@ class App extends Component {
         </Hero>
         <Map 
           projects={this.state.projects}
-          mapReadyNotify={this.mapReadyForData.bind(this)}
-          filters={this.state.filters}
+          mapReadyNotify={this.mapReadyForData}
         ></Map>
         <FilterMenu
+          resetFilters={this.resetFilters}
+          sliderRange={this.state.sliderRange}
+          onSliderChange={this.sliderChange}
           onFilterChange={this.filterChange}
           filters={this.state.filters}
         ></FilterMenu>
@@ -68,7 +74,16 @@ class App extends Component {
     this.setState({filters: filtersCopy})
   }
 
-  mapReadyForData() {
+  sliderChange = (values) => {
+    console.log('slider change')
+    this.setState({ sliderRange: values })
+  }
+
+  resetFilters = () => {
+    this.setState({ sliderRange: temporalRange })
+  }
+
+  mapReadyForData = () => {
     this.setState(this.state)
   }
 
