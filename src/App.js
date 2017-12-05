@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Map from './components/map/map.component'
+import Immutable from 'immutable'
 import FilterMenu from './components/filter/filter.component'
 import logo from './logo.png'
 import {
@@ -22,8 +23,6 @@ const fields = [
   {name: "accessibilite3_point_d_acces"},
 ]
 
-const temporalRange = [0,100]
-
 const sql = `select ${fields.map(field => field.name).join(',')}, longitude, latitude 
 from ${process.env.REACT_APP_SQLTABLE} where longitude is not null and latitude is not null`
 
@@ -31,10 +30,13 @@ class App extends Component {
 
   constructor(props) {
     super(props)
+    this.defaults = {
+      temporal: Immutable.List([0,100])
+    }
     this.state = {
       projects: [],
       filters: {},
-      sliderRange: temporalRange
+      sliderRange: this.defaults.temporal.toJS()
     }
   }
 
@@ -67,7 +69,6 @@ class App extends Component {
   }
 
   filterChange = (filter) => {
-    console.log('change')
     const filtersCopy = {...this.state.filters}
     const filterIndex = filtersCopy[filter.field].values.findIndex(f => f.name === filter.name)
     filtersCopy[filter.field].values[filterIndex].checked = filter.checked
@@ -75,12 +76,13 @@ class App extends Component {
   }
 
   sliderChange = (values) => {
-    console.log('slider change')
     this.setState({ sliderRange: values })
   }
 
   resetFilters = () => {
-    this.setState({ sliderRange: temporalRange })
+    this.setState({ projects: this.defaults.projects.toJS() })
+    this.setState({ filters: this.defaults.filters.toJS() })
+    this.setState({ sliderRange: this.defaults.temporal.toJS() })
   }
 
   mapReadyForData = () => {
@@ -91,6 +93,7 @@ class App extends Component {
     axios.get(`${process.env.REACT_APP_SQLROOT}?q=${encodeURIComponent(sql)}`)
       .then(res => {
         const projects = res.data.rows
+        
         const filters = fields.filter(field => field.filter).reduce((result, item) => {
           const key = item.name
           result[key] = {name: item.display, values:[].concat(...projects.map(
@@ -105,6 +108,11 @@ class App extends Component {
           return result
         }, {})
 
+        // set immutable references for reset functions
+        this.defaults.projects = Immutable.fromJS(projects)
+        this.defaults.filters = Immutable.fromJS(filters)
+
+        // set state
         this.setState({ projects: projects, filters: filters })
       })
 

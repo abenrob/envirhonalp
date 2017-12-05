@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { render } from 'react-dom'
 import {
   PanelBlock, Menu, MenuLabel
 } from 'bloomer'
 
-import Slider, { Range } from 'rc-slider'
+import { Range } from 'rc-slider'
 
 export default class SliderFilter extends Component {
 
@@ -46,7 +45,6 @@ export default class SliderFilter extends Component {
   }
 
   render() {
-
     return (
       <PanelBlock>
         <Menu className="slider-container">

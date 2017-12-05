@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { render } from 'react-dom'
 import mapboxgl from 'mapbox-gl'
 import { point as turf_point, featureCollection as turf_featureCollection } from '@turf/helpers'
 
@@ -118,7 +117,6 @@ export default class Map extends Component {
   }
 
   render() {
-
     return (
       <div
         ref={el => this.mapContainer = el}

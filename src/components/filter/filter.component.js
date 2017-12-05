@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { render } from 'react-dom'
 import {
   Panel, PanelHeading, PanelBlock, Button, Menu, MenuLabel
 } from 'bloomer'
@@ -11,15 +10,6 @@ export default class FilterMenu extends Component {
   constructor(props) {
     super(props)
     this.state = {}
-  }
-
-  shouldComponentUpdate(nextProps) {
-    console.log(nextProps)
-    return true
-  }
-
-  componentDidUpdate() {
-    console.log('filters')
   }
 
   render() {
