@@ -96,24 +96,15 @@ export default class Map extends Component {
     this.props.mapReadyNotify()
   }
 
-  shouldComponentUpdate(nextProps) {
-    const should = this.state.mapReady && 
-      nextProps.projects && 
-      nextProps.projects !== this.state.projects
-    if (should) {
-      this.setState({projects: nextProps.projects})
+  componentWillReceiveProps(newProps) {
+    if (this.state.mapReady && newProps.projects) {
+      const projectMap = newProps.projects.map(project => {
+        return turf_point([project.longitude, project.latitude], project)
+      })
+  
+      this.map.getSource('projectSource').setData(turf_featureCollection(projectMap))
     }
-    return should ? true : false
-  }
-
-  componentDidUpdate(newProps) {
-    const projectMap = newProps.projects.map(project => {
-      return turf_point([project.longitude, project.latitude], project)
-    })
-
-    const mapData = turf_featureCollection(projectMap)
-
-    this.map.getSource('projectSource').setData(mapData)
+    
   }
 
   render() {

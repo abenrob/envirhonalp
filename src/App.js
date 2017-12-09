@@ -68,21 +68,44 @@ class App extends Component {
     )
   }
 
+  filterProjects = () => {
+    const filters = Object.keys(this.state.filters).map(key => {
+      return {
+        field: key, 
+        string: this.state.filters[key].values.filter(val => val.checked).map(filt => filt.name).join()
+      }
+    })
+    const projects = this.defaults.projects.toJS().filter(project => {
+      for (let filter of filters){
+        if ((filter.string.indexOf(project[filter.field]) === -1) && project[filter.field] !== "") {
+          return false
+        }
+      }
+      return true
+    })
+    console.log(filters,projects)
+    this.setState({projects: projects})
+  }
+
   filterChange = (filter) => {
     const filtersCopy = {...this.state.filters}
     const filterIndex = filtersCopy[filter.field].values.findIndex(f => f.name === filter.name)
     filtersCopy[filter.field].values[filterIndex].checked = filter.checked
     this.setState({filters: filtersCopy})
+    this.filterProjects()
   }
 
   sliderChange = (values) => {
     this.setState({ sliderRange: values })
+    this.filterProjects()
   }
 
   resetFilters = () => {
-    this.setState({ projects: this.defaults.projects.toJS() })
-    this.setState({ filters: this.defaults.filters.toJS() })
-    this.setState({ sliderRange: this.defaults.temporal.toJS() })
+    this.setState({ 
+      projects: this.defaults.projects.toJS(), 
+      filters: this.defaults.filters.toJS(), 
+      sliderRange: this.defaults.temporal.toJS()
+    })
   }
 
   mapReadyForData = () => {
