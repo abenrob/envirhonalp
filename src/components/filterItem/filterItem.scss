@@ -1,0 +1,11 @@
+.filter-item {
+    cursor: pointer;
+    color: #666;
+    line-height: 12px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    i {
+        color: $primary;
+        margin-right: 5px;
+    }
+}

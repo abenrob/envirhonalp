@@ -1,0 +1,7 @@
+.menu-label {
+    font-size: 0.8em;
+    margin-bottom: .5em;
+    &:not(:last-child) {
+        margin-bottom: .5em;
+    }
+}
