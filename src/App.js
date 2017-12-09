@@ -75,6 +75,7 @@ class App extends Component {
         string: this.state.filters[key].values.filter(val => val.checked).map(filt => filt.name).join()
       }
     })
+    
     const projects = this.defaults.projects.toJS().filter(project => {
       for (let filter of filters){
         if ((filter.string.indexOf(project[filter.field]) === -1) && project[filter.field] !== "") {
@@ -83,7 +84,7 @@ class App extends Component {
       }
       return true
     })
-    console.log(filters,projects)
+ 
     this.setState({projects: projects})
   }
 
