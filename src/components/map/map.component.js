@@ -33,7 +33,7 @@ export default class Map extends Component {
       <p><strong>Thèmes: </strong>${properties.themes}</p>
       <p><strong>Type de données: </strong>${properties.type_de_donnees_modifie}</p>
       <p><strong>Propriété des données: </strong>${properties.accessibilite_publique_privee}</p>
-      <p><strong>Couverture temporelle: </strong>${properties.couverture_temporelle_debut} - ${properties.couverture_temporelle_fin === 'null' ? 'aujourd\'hui' : properties.couverture_temporelle_fin}</p>  
+      <p><strong>Couverture temporelle: </strong>${properties.couverture_temporelle_debut} - ${properties.couverture_temporelle_fin}</p>  
       ${link}`
   }
 

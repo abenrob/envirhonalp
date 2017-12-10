@@ -5,6 +5,8 @@ import {
 
 import { Range } from 'rc-slider'
 
+import DateDomains from './../../utilities/dateDomains.utility'
+
 export default class SliderFilter extends Component {
 
   constructor(props) {
@@ -24,19 +26,7 @@ export default class SliderFilter extends Component {
   }
 
   dateDomainLookup = (value) => {
-    const range = [1900,(new Date()).getFullYear()]
-    let actuals = []
-    if (value[0] === 0) {
-      actuals[0] = '<= 1900'
-    } else {
-      actuals[0] = Math.round((value[0]/100) * (range[1] - range[0])) + range[0]
-    }
-
-    if (value[1] === 100) {
-      actuals[1] = 'ajd.'
-    } else {
-      actuals[1] = Math.round((value[1]/100) * (range[1] - range[0])) + range[0]
-    }
+    const actuals = DateDomains.displayDateLookup(value)
     this.setState({ low: actuals[0], high: actuals[1]})
   }
 

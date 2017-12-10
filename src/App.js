@@ -3,6 +3,7 @@ import axios from 'axios'
 import Map from './components/map/map.component'
 import Immutable from 'immutable'
 import FilterMenu from './components/filter/filter.component'
+import DateDomains from './utilities/dateDomains.utility'
 import logo from './logo.png'
 import {
   Hero, HeroHeader, Nav, NavLeft, NavItem
@@ -24,7 +25,7 @@ const fields = [
 ]
 
 const sql = `select ${fields.map(field => field.name).join(',')}, longitude, latitude 
-from ${process.env.REACT_APP_SQLTABLE} where longitude is not null and latitude is not null`
+from ${process.env.REACT_APP_SQLTABLE} where longitude is not null and latitude is not null and longitude != '' and latitude != ''`
 
 class App extends Component {
 
@@ -75,16 +76,36 @@ class App extends Component {
         string: this.state.filters[key].values.filter(val => val.checked).map(filt => filt.name).join()
       }
     })
-    
+
     const projects = this.defaults.projects.toJS().filter(project => {
       for (let filter of filters){
-        if ((filter.string.indexOf(project[filter.field]) === -1) && project[filter.field] !== "") {
+        const projectFilters = project[filter.field].split(',').map(f => f.trim())
+        if (!projectFilters.some(f => filter.string.includes(f))) {
           return false
         }
       }
+      
+      if (this.state.sliderRange.join() !== this.defaults.temporal.toJS().join()) {
+        const actuals = DateDomains.valueDateLookup(this.state.sliderRange)
+        const pStart = Number(project.couverture_temporelle_debut)
+        if (this.state.sliderRange[0] > this.defaults.temporal.toJS()[0]) {
+          if (!pStart || pStart < actuals[0]) {
+            return false
+          }
+        }
+
+        const pEnd = Number(project.couverture_temporelle_fin)
+        if (this.state.sliderRange[1] < this.defaults.temporal.toJS()[1]) {
+          if (!pEnd || pEnd > actuals[1]) {
+            return false
+          }
+        }
+
+      }
+
       return true
     })
- 
+
     this.setState({projects: projects})
   }
 
@@ -92,13 +113,15 @@ class App extends Component {
     const filtersCopy = {...this.state.filters}
     const filterIndex = filtersCopy[filter.field].values.findIndex(f => f.name === filter.name)
     filtersCopy[filter.field].values[filterIndex].checked = filter.checked
-    this.setState({filters: filtersCopy})
-    this.filterProjects()
+    this.setState({filters: filtersCopy}, () => {
+      this.filterProjects()
+    })
   }
 
   sliderChange = (values) => {
-    this.setState({ sliderRange: values })
-    this.filterProjects()
+    this.setState({ sliderRange: values }, () => {
+      this.filterProjects()
+    })
   }
 
   resetFilters = () => {
@@ -116,7 +139,11 @@ class App extends Component {
   componentDidMount() {
     axios.get(`${process.env.REACT_APP_SQLROOT}?q=${encodeURIComponent(sql)}`)
       .then(res => {
-        const projects = res.data.rows
+        let projects = res.data.rows
+        
+        projects.forEach(project => {
+          project.couverture_temporelle_fin = project.couverture_temporelle_fin ? project.couverture_temporelle_fin : 'aujourd\'hui'
+        })
         
         const filters = fields.filter(field => field.filter).reduce((result, item) => {
           const key = item.name
