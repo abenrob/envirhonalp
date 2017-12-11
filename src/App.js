@@ -25,7 +25,7 @@ const fields = [
 ]
 
 const sql = `select ${fields.map(field => field.name).join(',')}, longitude, latitude 
-from ${process.env.REACT_APP_SQLTABLE} where longitude is not null and latitude is not null and longitude != '' and latitude != ''`
+from ${process.env.REACT_APP_SQLTABLE} where longitude is not null and latitude is not null`
 
 class App extends Component {
 
