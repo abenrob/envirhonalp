@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import Map from './components/map/map.component'
 import Immutable from 'immutable'
 import FilterMenu from './components/filter/filter.component'
 import DateDomains from './utilities/dateDomains.utility'
+import DataFormat from './utilities/spreadsheet.utility'
 import logo from './logo.png'
 import {
   Hero, HeroHeader, Nav, NavLeft, NavItem
@@ -23,9 +23,6 @@ const fields = [
   {name: "accessibilite_publique_privee"},
   {name: "accessibilite3_point_d_acces"},
 ]
-
-const sql = `select ${fields.map(field => field.name).join(',')}, longitude, latitude 
-from ${process.env.REACT_APP_SQLTABLE} where longitude is not null and latitude is not null`
 
 class App extends Component {
 
@@ -137,14 +134,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get(`${process.env.REACT_APP_SQLROOT}?q=${encodeURIComponent(sql)}`)
-      .then(res => {
-        let projects = res.data.rows
-        
-        projects.forEach(project => {
-          project.couverture_temporelle_fin = project.couverture_temporelle_fin ? project.couverture_temporelle_fin : 'aujourd\'hui'
-        })
-        
+    DataFormat
+      .then(projects => {
+        // generate filters
         const filters = fields.filter(field => field.filter).reduce((result, item) => {
           const key = item.name
           result[key] = {name: item.display, values:[].concat(...projects.map(
@@ -165,8 +157,8 @@ class App extends Component {
 
         // set state
         this.setState({ projects: projects, filters: filters })
-      })
 
+      }).catch(err => console.log(err))
   }
 }
 

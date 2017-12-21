@@ -38,9 +38,11 @@ export default class Map extends Component {
   }
 
   componentDidMount() {
+    mapboxgl.accessToken = process.env.REACT_APP_MAPBOX;
+
     this.map = new mapboxgl.Map({
       container: this.mapContainer,
-      style: mapStyle,
+      style: process.env.REACT_APP_MAPSTYLE,
       center: [4.5, 44.9],
       zoom: 6.5
     })
