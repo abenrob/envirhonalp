@@ -1,0 +1,15 @@
+{
+  "short_name": "Panorama",
+  "name": "OURANOS-AuRA Panorama",
+  "icons": [
+    {
+      "src": "logo-ouranos.jpg",
+      "sizes": "170×203",
+      "type": "image/jpg"
+    }
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#38a1ad",
+  "background_color": "#ffffff"
+}

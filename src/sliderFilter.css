@@ -1,0 +1,10 @@
+.slider-container {
+  width: 100%; }
+  .slider-container .slider-values {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px; }
+  .slider-container .slider-box {
+    margin: 0 10px; }
+  .slider-container .rc-slider {
+    margin-top: 10px; }

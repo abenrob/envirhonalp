@@ -1,20 +1,49 @@
-@import "../node_modules/bulmaswatch/solar/variables";
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+$family-sans-serif: 'Raleway', sans-serif;
+$primary: #38a1ad;
 @import "../node_modules/bulma/bulma";
-@import "../node_modules/bulmaswatch/solar/overrides";
 @import "../node_modules/mapbox-gl/dist/mapbox-gl.css";
+@import "../node_modules/rc-slider/dist/rc-slider.css";
+
 html {
   overflow-x: hidden;
   overflow-y: hidden;
 }
+
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
 }
-.navbar-item {
+
+.hero .nav {
+  background: $primary;
+  box-shadow: 0px 0px 8px 2px rgba(0,0,0,0.3);
+  color: #e7e7e7;
+}
+
+.nav-item.is-brand {
+  padding: 0;
+}
+
+.nav-item {
+  font-size: 1.1rem;
+  font-weight: 800;
   img {
-    height: 50px;
+    display: block;
+    max-height:51px;
+    width: auto;
+    height: auto;
   }
 }
 
-@import "./components/map/map.css";
+.actionable {
+  cursor: pointer;
+}
+
+@import "./components/map/map.scss";
+@import "./components/filter/filter.scss";
+@import "./components/filterList/filterList.scss";
+@import "./components/filterItem/filterItem.scss";
+@import "./components/sliderFilter/sliderFilter.scss";
+$fa-font-path:"../node_modules/font-awesome/fonts";
+@import "../node_modules/font-awesome/scss/font-awesome";
