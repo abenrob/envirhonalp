@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import mapboxgl from 'mapbox-gl'
 import { point as turf_point, featureCollection as turf_featureCollection } from '@turf/helpers'
 
-const mapStyle = `https://openmaptiles.github.io/klokantech-terrain-gl-style/style-cdn.json?key=${process.env.REACT_APP_MAPKEY}`
-
 export default class Map extends Component {
 
   constructor(props) {
